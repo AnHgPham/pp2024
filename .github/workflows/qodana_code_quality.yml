@@ -1,0 +1,52 @@
+name: Qodana
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+
+    steps:
+      # 1. Checkout code
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      # 2. Setup Python environment
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # 3. Debug Python environment
+      - name: Debug Python
+        run: |
+          python --version
+          python -m pip --version
+
+      # 4. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 5. Run Qodana analysis
+      - name: 'Qodana Scan (Debug Mode)'
+        uses: JetBrains/qodana-action@v2024.2
+        with:
+          pr-mode: false
+          log-level: debug
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1953071556 }}
+          QODANA_ENDPOINT: 'https://qodana.cloud'
