@@ -9,6 +9,6 @@ Students are expected to:
 Student Info
 =========================
 
-* Student Name: Pham Hoang An USTH ICT1 
+* Student Name: Phạm Hoàng An USTH ICT1 
 * Student ID: 23BI14002
 
